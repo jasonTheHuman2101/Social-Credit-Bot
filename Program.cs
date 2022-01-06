@@ -10,7 +10,7 @@ namespace SocCredBotV1
     {
         private static DiscordSocketClient _client;
         public static bool isReadyForConnection = false;
-        public static string token = "NzYyMjcwOTcxNDk4ODU2NDYw.X3muKQ.xshaiwieur cw4gBeKeSMfnyj67M4q0er2CM84"; //edit before use
+        public static string token = "discordbottokengoesinhere"; //edit before use
 
         public static async Task Main(string[] args)
         {
