@@ -11,10 +11,15 @@ namespace SocCredBotV1
         public List<CreditScores> CreditScores { get; set;}
     }
 
-    class CreditScores 
+    class CreditScores : IComparable<CreditScores>
     {
         public string username { get; set; }
         public int score { get; set; }
+
+        public int CompareTo(CreditScores obj)
+        {
+            return score.CompareTo(obj.score);
+        }
     }
 
 
