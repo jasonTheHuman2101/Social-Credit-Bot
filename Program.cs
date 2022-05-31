@@ -13,7 +13,6 @@ namespace SocCredBotV1
         public static DiscordSocketClient _client;
         public static ulong id = Convert.ToUInt64(File.ReadAllText("channel.txt"));
         public static bool isReadyForConnection = false;
-        //public static string token = "NzYyMjcwOTcxNDk4ODU2NDYw.X3muKQ.7XBGVTxwfZhRF0zzxdOY8tF4AWk"; //edit before use
         public static string token = File.ReadAllText("token.txt");
         public static bool HasDailySummaryPosted = false;
 
