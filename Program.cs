@@ -11,6 +11,7 @@ namespace SocCredBotV1
     internal class Program
     {
         public static DiscordSocketClient _client;
+        public static ulong id = Convert.ToUInt64(File.ReadAllText("channel.txt"));
         public static bool isReadyForConnection = false;
         //public static string token = "NzYyMjcwOTcxNDk4ODU2NDYw.X3muKQ.7XBGVTxwfZhRF0zzxdOY8tF4AWk"; //edit before use
         public static string token = File.ReadAllText("token.txt");
@@ -51,7 +52,6 @@ namespace SocCredBotV1
                         break;
                     case "gen":
                         string path = WeeklySummaryGenerator.generateImage();
-                        ulong id = 930136582604853279; // 3
                         var chnl = _client.GetChannel(id) as IMessageChannel; // 4
                         await chnl.SendFileAsync(path);
                         break;
@@ -85,7 +85,6 @@ namespace SocCredBotV1
                     {
                         //Weekly Summary
                         string path = WeeklySummaryGenerator.generateImage();
-                        ulong id = 930136582604853279;
                         var chnl = _client.GetChannel(id) as IMessageChannel;
                         chnl.SendFileAsync(path);
                         ResetCreditScores();
@@ -93,7 +92,6 @@ namespace SocCredBotV1
                     else
                     {
                         //Daily summary
-                        ulong id = 930136582604853279;
                         var chnl = _client.GetChannel(id) as IMessageChannel;
                         chnl.SendMessageAsync("Daily Credit Score Summary");
                         chnl.SendMessageAsync(DailySummaryCreator.GenerateSummaryText());
@@ -136,21 +134,27 @@ namespace SocCredBotV1
             //string sender = arg.Author.Replace("?", "");
             string sender = arg.Author.Username;
 
-            if (sender == "Giga Credit") { }//do nowt
+            if (sender == "LADPoints") { }//do nowt
             else
             {
-                scResult pointstoremove = StringChecker.CheckString(arg.Content.ToLower());
-                if (pointstoremove.score == 0) { Console.WriteLine("None to remove"); }
+                if (arg.Channel.Id == 780786104139120651) { }//ignore SCC
                 else
                 {
-                    int newScore = CreditScoresIO.ModifyCreditScoreValue(sender, pointstoremove.score);
-                    //If there are points to remove, they will be here
-                    arg.Channel.SendMessageAsync("注意公民 ATTENTION CITIZEN: YOU HAVE BEEN DEDUCTED " + pointstoremove.score + " POINTS FOR SAYING:");
-                    foreach(string word in pointstoremove.words)
+                    scResult pointstoremove = StringChecker.CheckString(arg.Content.ToLower());
+                    if (pointstoremove.score == 0) { Console.WriteLine("None to remove"); }
+                    else
                     {
-                        arg.Channel.SendMessageAsync(word);
+                        int newScore = CreditScoresIO.ModifyCreditScoreValue(sender, pointstoremove.score);
+                        //If there are points to remove, they will be here
+                        arg.Channel.SendMessageAsync("Alrite there lad, blud finna lose " + pointstoremove.score + " cred for sayin:");
+                        Thread.Sleep(250);
+                        foreach (string word in pointstoremove.words)
+                        {
+                            arg.Channel.SendMessageAsync(word);
+                            Thread.Sleep(250);
+                        }
+                        arg.Channel.SendMessageAsync("Mans on " + newScore + " creds now. Watch it, capiche?");
                     }
-                    arg.Channel.SendMessageAsync("You are now on " + newScore + " points. Be careful, citizen.");
                 }
             }
 
